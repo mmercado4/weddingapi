@@ -14,6 +14,25 @@ api.get("/api/messages", (request, response) => {
   });
 });
 
+api.post("/api/messages", (request, response) => {
+  const newMessage = new Messages({
+    author: request.body.author,
+    message: request.body.message,
+  });
+
+  newMessage.save((error) => {
+    if (error) console.error(error);
+    else {
+      response.status(200).send({
+        success: true,
+        log: "message was inserted successfully",
+        author: newMessage.author,
+        message: newMessage.message,
+      });
+    }
+  });
+});
+
 api.listen(3333, () => {
   console.log("api is running in port 3333");
 });

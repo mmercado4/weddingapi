@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const messageSchema = new Schema(
   {
-    signature: String,
+    author: String,
     message: String,
   },
   { versionKey: false }
