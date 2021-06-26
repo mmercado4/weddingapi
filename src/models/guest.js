@@ -6,7 +6,7 @@ const guestSchema = new Schema(
   {
     name: String,
     email: String,
-    companions: [String],
+    companions: Array,
   },
   { versionKey: false }
 );
