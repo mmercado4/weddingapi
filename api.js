@@ -33,6 +33,29 @@ api.post("/api/messages", (request, response) => {
   });
 });
 
+//Guests
+const Guests = require("./src/models/guest");
+
+api.post("/api/guests", (request, response) => {
+  const newGuest = new Guests({
+    name: request.body.name,
+    email: request.body.email,
+    companions: request.body.companions,
+  });
+
+  newGuest.save((error) => {
+    if (error) console.error(error);
+    else {
+      response.status(200).send({
+        success: true,
+        log: "guest was inserted successfully",
+        name: newGuest.name,
+        email: newGuest.email,
+      });
+    }
+  });
+});
+
 api.listen(3333, () => {
   console.log("api is running in port 3333");
 });
