@@ -1,5 +1,6 @@
 const { apiInit } = require("./src/config/apiConfig");
 const { dbInit } = require("./src/config/dbConfig");
+const { sanitizeString, sanitizeObject } = require("./src/tools/sanitize");
 
 const api = apiInit();
 const db = dbInit();
@@ -16,8 +17,8 @@ api.get("/api/messages", (request, response) => {
 
 api.post("/api/messages", (request, response) => {
   const newMessage = new Messages({
-    author: request.body.author,
-    message: request.body.message,
+    author: sanitizeString(request.body.author),
+    message: sanitizeString(request.body.message),
   });
 
   newMessage.save((error) => {
@@ -38,8 +39,9 @@ const Guests = require("./src/models/guest");
 
 api.post("/api/guests", (request, response) => {
   const newGuest = new Guests({
-    name: request.body.name,
-    email: request.body.email,
+    name: sanitizeString(request.body.name),
+    email: sanitizeString(request.body.email),
+    bus: request.body.bus,
     companions: request.body.companions,
   });
 
@@ -51,6 +53,7 @@ api.post("/api/guests", (request, response) => {
         log: "guest was inserted successfully",
         name: newGuest.name,
         email: newGuest.email,
+        bus: newGuest.bus,
       });
     }
   });
