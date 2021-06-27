@@ -37,6 +37,16 @@ api.post("/api/messages", (request, response) => {
 //Guests
 const Guests = require("./src/models/guest");
 
+//Get guest for email
+api.get("/api/guests/email/:email", (request, response) => {
+  let email = request.params.email;
+  Guests.find({ email: email }, (error, data) => {
+    if (error) console.log(error);
+    else response.send(data);
+  });
+});
+
+//Post guest
 api.post("/api/guests", (request, response) => {
   const newGuest = new Guests({
     name: sanitizeString(request.body.name),
