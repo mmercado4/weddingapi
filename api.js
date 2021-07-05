@@ -1,6 +1,7 @@
 const { apiInit } = require("./src/config/apiConfig");
 const { dbInit } = require("./src/config/dbConfig");
 const { sanitizeString, sanitizeObject } = require("./src/tools/sanitize");
+const bcrypt = require("bcrypt");
 
 const api = apiInit();
 const db = dbInit();
@@ -68,6 +69,31 @@ api.post("/api/guests", (request, response) => {
     }
   });
 });
+
+//Users
+const Users = require("./src/models/user");
+
+//Post new User
+api.post("/api/users", (request, response) => {
+  bcrypt.hash(request.body.password, 12).then((hashedPassword) => {
+    const newUser = new Users({
+      name: request.body.name,
+      password: hashedPassword,
+    });
+    newUser.save((error) => {
+      if (error) console.log(error);
+      else {
+        response.send({
+          success: true,
+          message: "User was created successfully",
+          user: newUser.name,
+        });
+      }
+    });
+  });
+});
+
+//TODO GET AND LOGIN USERS.
 
 api.listen(3333, () => {
   console.log("api is running in port 3333");
