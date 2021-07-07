@@ -1,6 +1,8 @@
 const { apiInit } = require("./src/config/apiConfig");
 const { dbInit } = require("./src/config/dbConfig");
 const { sanitizeString, sanitizeObject } = require("./src/tools/sanitize");
+const { SEED_AUTH } = require("./src/tools/consts");
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 const api = apiInit();
@@ -77,7 +79,7 @@ const Users = require("./src/models/user");
 api.post("/api/users", (request, response) => {
   bcrypt.hash(request.body.password, 12).then((hashedPassword) => {
     const newUser = new Users({
-      name: request.body.name,
+      user: request.body.user,
       password: hashedPassword,
     });
     newUser.save((error) => {
@@ -86,14 +88,56 @@ api.post("/api/users", (request, response) => {
         response.send({
           success: true,
           message: "User was created successfully",
-          user: newUser.name,
+          user: newUser.user,
         });
       }
     });
   });
 });
 
-//TODO GET AND LOGIN USERS.
+//Login
+api.post("/api/login", (request, response) => {
+  let { user, password } = request.body;
+
+  Users.findOne({ user: user }, (error, data) => {
+    if (error) return reponse.status(500).send("Login failed!");
+    if (!data)
+      return response.status(403).send({
+        success: false,
+        message: "User/Password was wrong",
+      });
+    else {
+      //Check password
+      let hashPassword = data.password;
+      let userPassword = password;
+      bcrypt.compare(userPassword, hashPassword, (error, result) => {
+        if (error)
+          return response.status(403).send({
+            success: false,
+            message: "User/Password was wrong",
+          });
+        else {
+          if (result) {
+            //Create token
+            const token = jwt.sign({ user: data }, SEED_AUTH, {
+              expiresIn: "1h",
+            });
+
+            response.cookie("token", token).status(200).send({
+              success: true,
+              message: "User logged in successfully",
+            });
+          } else {
+            response.status(403).send({
+              success: false,
+              message: "User/Password was wrong",
+            });
+          }
+        }
+      });
+    }
+  });
+});
 
 api.listen(3333, () => {
   console.log("api is running in port 3333");

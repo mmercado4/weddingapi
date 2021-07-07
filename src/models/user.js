@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
   {
-    name: String,
+    user: String,
     password: String,
   },
   { versionKey: false }

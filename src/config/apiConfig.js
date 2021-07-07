@@ -1,3 +1,4 @@
+const cookieParser = require("cookie-parser");
 const express = require("express");
 const { FULLHOST, WEBPORT } = require("../tools/consts");
 
@@ -7,6 +8,9 @@ const apiInit = () => {
   //BodyParser
   api.use(express.json());
   api.use(express.urlencoded({ extended: true }));
+
+  //Cookie Parser
+  api.use(cookieParser());
 
   //Cors Policy
   api.use((req, res, next) => {
