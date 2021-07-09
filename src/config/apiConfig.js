@@ -1,6 +1,6 @@
 const cookieParser = require("cookie-parser");
 const express = require("express");
-const { FULLHOST, WEBPORT } = require("../tools/consts");
+const { FULLHOST, WEBPORT } = require("../tools/constants");
 
 const apiInit = () => {
   const api = express();

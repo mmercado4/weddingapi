@@ -1,7 +1,7 @@
 const { apiInit } = require("./src/config/apiConfig");
 const { dbInit } = require("./src/config/dbConfig");
-const { sanitizeString, sanitizeObject } = require("./src/tools/sanitize");
-const { SEED_AUTH } = require("./src/tools/consts");
+const { sanitizeString } = require("./src/tools/sanitize");
+const { SEED_AUTH } = require("./src/tools/constants"); //TODO Hide SEED AUTH
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
