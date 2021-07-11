@@ -49,6 +49,27 @@ api.get("/api/guests/email/:email", (request, response) => {
   });
 });
 
+//Get all guest
+api.get("/api/guests", (request, response) => {
+  Guests.find((error, data) => {
+    if (error) console.error(error);
+    else response.send(data);
+  });
+});
+
+//Get guest pages
+api.get("/api/guests/page/:page", (request, response) => {
+  let { page } = request.params;
+  let qty = 2; //TODO: MAKE IT DINAMYC.
+  let skp = (page - 1) * qty;
+  Guests.find((error, data) => {
+    if (error) console.error(error);
+    else response.send(data);
+  })
+    .skip(skp)
+    .limit(qty);
+});
+
 //Post guest
 api.post("/api/guests", (request, response) => {
   const newGuest = new Guests({
