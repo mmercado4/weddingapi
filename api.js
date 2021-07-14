@@ -58,16 +58,15 @@ api.get("/api/guests", (request, response) => {
 });
 
 //Get guest pages
-api.get("/api/guests/page/:page", (request, response) => {
-  let { page } = request.params;
-  let qty = 2; //TODO: MAKE IT DINAMYC.
-  let skp = (page - 1) * qty;
+api.get("/api/guests/page/:page/amount/:amount", (request, response) => {
+  let { page, amount } = request.params;
+  let skip = (page - 1) * amount;
   Guests.find((error, data) => {
     if (error) console.error(error);
     else response.send(data);
   })
-    .skip(skp)
-    .limit(qty);
+    .skip(skip)
+    .limit(parseInt(amount));
 });
 
 //Post guest
