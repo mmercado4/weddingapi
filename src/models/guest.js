@@ -5,9 +5,8 @@ const Schema = mongoose.Schema;
 const guestSchema = new Schema(
   {
     name: String,
-    email: String,
+    surname: String,
     bus: Boolean,
-    companions: Array,
   },
   { versionKey: false }
 );

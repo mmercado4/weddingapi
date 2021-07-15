@@ -40,10 +40,10 @@ api.post("/api/messages", (request, response) => {
 //Guests
 const Guests = require("./src/models/guest");
 
-//Get guest for email
-api.get("/api/guests/email/:email", (request, response) => {
-  let email = request.params.email;
-  Guests.find({ email: email }, (error, data) => {
+//Get guest for name and surname
+api.get("/api/guests/name/:name/surname/:surname", (request, response) => {
+  const { name, surname } = request.params;
+  Guests.find({ name: name, surname: surname }, (error, data) => {
     if (error) console.log(error);
     else response.send(data);
   });
@@ -71,11 +71,11 @@ api.get("/api/guests/page/:page/amount/:amount", (request, response) => {
 
 //Post guest
 api.post("/api/guests", (request, response) => {
+  const { name, surname, bus } = request.body;
   const newGuest = new Guests({
-    name: sanitizeString(request.body.name),
-    email: sanitizeString(request.body.email),
-    bus: request.body.bus,
-    companions: request.body.companions,
+    name: sanitizeString(name).trim().toLowerCase(),
+    surname: sanitizeString(surname).trim().toLowerCase(),
+    bus: bus,
   });
 
   newGuest.save((error) => {
@@ -85,7 +85,7 @@ api.post("/api/guests", (request, response) => {
         success: true,
         log: "guest was inserted successfully",
         name: newGuest.name,
-        email: newGuest.email,
+        surname: newGuest.surname,
         bus: newGuest.bus,
       });
     }
