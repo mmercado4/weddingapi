@@ -48,6 +48,29 @@ api.get("/api/messages/page/:page/amount/:amount", (request, response) => {
     .limit(parseInt(amount));
 });
 
+api.delete("/api/messages/:id", (request, response) => {
+  let { id } = request.params;
+  Messages.findByIdAndRemove(id, (error, data) => {
+    if (error) return response.status(500).send(error);
+    else {
+      if (data) {
+        response.status(200).send({
+          success: true,
+          method: "DELETE",
+          message: "The message was delete successfully",
+        });
+      } else {
+        response.status(200).send({
+          success: true,
+          method: "DELETE",
+          message: "The message wasn´t found",
+          id_searched: id,
+        });
+      }
+    }
+  });
+});
+
 //Guests
 const Guests = require("./src/models/guest");
 
