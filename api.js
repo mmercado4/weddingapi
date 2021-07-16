@@ -37,6 +37,17 @@ api.post("/api/messages", (request, response) => {
   });
 });
 
+api.get("/api/messages/page/:page/amount/:amount", (request, response) => {
+  let { page, amount } = request.params;
+  let skip = (page - 1) * amount;
+  Messages.find((error, data) => {
+    if (error) console.error(error);
+    else response.send(data);
+  })
+    .skip(skip)
+    .limit(parseInt(amount));
+});
+
 //Guests
 const Guests = require("./src/models/guest");
 
