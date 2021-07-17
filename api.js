@@ -48,6 +48,7 @@ api.get("/api/messages/page/:page/amount/:amount", (request, response) => {
     .limit(parseInt(amount));
 });
 
+//Delete messages
 api.delete("/api/messages/:id", (request, response) => {
   let { id } = request.params;
   Messages.findByIdAndRemove(id, (error, data) => {
@@ -122,6 +123,30 @@ api.post("/api/guests", (request, response) => {
         surname: newGuest.surname,
         bus: newGuest.bus,
       });
+    }
+  });
+});
+
+//Delete guests
+api.delete("/api/guests/:id", (request, response) => {
+  let { id } = request.params;
+  Guests.findByIdAndRemove(id, (error, data) => {
+    if (error) return response.status(500).send(error);
+    else {
+      if (data) {
+        response.status(200).send({
+          success: true,
+          method: "DELETE",
+          message: "The guest was delete successfully",
+        });
+      } else {
+        response.status(200).send({
+          success: true,
+          method: "DELETE",
+          message: "The guest wasn´t found",
+          id_searched: id,
+        });
+      }
     }
   });
 });
