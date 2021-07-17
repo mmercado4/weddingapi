@@ -22,6 +22,7 @@ api.post("/api/messages", (request, response) => {
   const newMessage = new Messages({
     author: sanitizeString(request.body.author),
     message: sanitizeString(request.body.message),
+    created_at: new Date(),
   });
 
   newMessage.save((error) => {

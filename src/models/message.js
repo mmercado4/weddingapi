@@ -6,6 +6,7 @@ const messageSchema = new Schema(
   {
     author: String,
     message: String,
+    created_at: Date,
   },
   { versionKey: false }
 );
