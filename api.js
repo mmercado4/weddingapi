@@ -35,6 +35,15 @@ api.post("/api/messages", (request, response) => {
       });
     }
   });
+}); //TODO: ************************************************AÑADIR EN EL POST LA FECHA DE INSERCIÓN DEL MENSAJE****************
+
+//Get messages for id
+api.get("/api/messages/:id", (request, response) => {
+  let { id } = request.params;
+  Messages.findById(id, (error, data) => {
+    if (error) response.status(500).send(error);
+    else response.status(200).send(data);
+  });
 });
 
 api.get("/api/messages/page/:page/amount/:amount", (request, response) => {
@@ -89,6 +98,15 @@ api.get("/api/guests", (request, response) => {
   Guests.find((error, data) => {
     if (error) console.error(error);
     else response.send(data);
+  });
+});
+
+//Get guests for id
+api.get("/api/guests/:id", (request, response) => {
+  let { id } = request.params;
+  Guests.findById(id, (error, data) => {
+    if (error) response.status(500).send(error);
+    else response.status(200).send(data);
   });
 });
 
