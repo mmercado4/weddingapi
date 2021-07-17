@@ -81,6 +81,22 @@ api.delete("/api/messages/:id", (request, response) => {
   });
 });
 
+//Update messages
+api.put("/api/messages/:id", (request, response) => {
+  let { id } = request.params;
+
+  Messages.findByIdAndUpdate(id, { $set: request.body }, (error, data) => {
+    if (error) response.status(500).send(error);
+    else {
+      response.status(201).send({
+        success: true,
+        message: "Message was modified successfully",
+        data: data,
+      });
+    }
+  });
+});
+
 //Guests
 const Guests = require("./src/models/guest");
 
@@ -126,8 +142,8 @@ api.get("/api/guests/page/:page/amount/:amount", (request, response) => {
 api.post("/api/guests", (request, response) => {
   const { name, surname, bus } = request.body;
   const newGuest = new Guests({
-    name: sanitizeString(name).trim().toLowerCase(),
-    surname: sanitizeString(surname).trim().toLowerCase(),
+    name: sanitizeString(name).trim(),
+    surname: sanitizeString(surname).trim(),
     bus: bus,
   });
 
@@ -165,6 +181,22 @@ api.delete("/api/guests/:id", (request, response) => {
           id_searched: id,
         });
       }
+    }
+  });
+});
+
+//Update guest
+api.put("/api/guests/:id", (request, response) => {
+  let { id } = request.params;
+
+  Guests.findByIdAndUpdate(id, { $set: request.body }, (error, data) => {
+    if (error) response.status(500).send(error);
+    else {
+      response.status(201).send({
+        success: true,
+        message: "Guest was modified successfully",
+        data: data,
+      });
     }
   });
 });
