@@ -3,7 +3,7 @@ const { MONGO_URL } = require("../tools/constants");
 
 const dbInit = () => {
   mongoose.connect(
-    MONGO_URL,
+    process.env.MONGO_URL,
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,

@@ -1,12 +1,20 @@
 const { apiInit } = require("./src/config/apiConfig");
 const { dbInit } = require("./src/config/dbConfig");
 const { sanitizeString } = require("./src/tools/sanitize");
-const { SEED_AUTH } = require("./src/tools/constants"); //TODO Hide SEED AUTH
+const { APIPORT } = require("./src/tools/constants");
+const dotenv = require("dotenv");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
+//Config dotenv
+if (process.env.NODE_ENV !== "production") {
+  dotenv.config();
+}
+
 const api = apiInit();
 const db = dbInit();
+
+const PORT = process.env.PORT || APIPORT;
 
 //Congratulation messages.
 const Messages = require("./src/models/message");
@@ -36,7 +44,7 @@ api.post("/api/messages", (request, response) => {
       });
     }
   });
-}); //TODO: ************************************************AÑADIR EN EL POST LA FECHA DE INSERCIÓN DEL MENSAJE****************
+});
 
 //Get messages for id
 api.get("/api/messages/:id", (request, response) => {
@@ -249,7 +257,7 @@ api.post("/api/login", (request, response) => {
         else {
           if (result) {
             //Create token
-            const token = jwt.sign({ user: data }, SEED_AUTH, {
+            const token = jwt.sign({ user: data }, process.env.SEED_AUTH, {
               expiresIn: "1h",
             });
 
@@ -269,6 +277,6 @@ api.post("/api/login", (request, response) => {
   });
 });
 
-api.listen(3333, () => {
+api.listen(PORT, () => {
   console.log("api is running in port 3333");
 });
