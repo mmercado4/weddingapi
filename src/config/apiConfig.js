@@ -1,6 +1,6 @@
 const cookieParser = require("cookie-parser");
 const express = require("express");
-const { FULLHOST, WEBPORT } = require("../tools/constants");
+const { WEB_URL } = require("../tools/constants");
 
 const apiInit = () => {
   const api = express();
@@ -14,7 +14,7 @@ const apiInit = () => {
 
   //Cors Policy
   api.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", `${FULLHOST}${WEBPORT}`);
+    res.header("Access-Control-Allow-Origin", WEB_URL);
     res.header(
       "Access-Control-Allow-Headers",
       "Origin, X-Requested-With, Content-Type, Accept"
