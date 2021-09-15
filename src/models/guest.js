@@ -7,6 +7,7 @@ const guestSchema = new Schema(
     name: String,
     surname: String,
     bus: Boolean,
+    allergies: String,
   },
   { versionKey: false }
 );

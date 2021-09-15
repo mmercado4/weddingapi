@@ -149,11 +149,12 @@ api.get("/api/guests/page/:page/amount/:amount", (request, response) => {
 
 //Post guest
 api.post("/api/guests", (request, response) => {
-  const { name, surname, bus } = request.body;
+  const { name, surname, bus, allergies } = request.body;
   const newGuest = new Guests({
     name: sanitizeString(name).trim(),
     surname: sanitizeString(surname).trim(),
     bus: bus,
+    allergies: sanitizeString(allergies).trim(),
   });
 
   newGuest.save((error) => {
@@ -165,6 +166,7 @@ api.post("/api/guests", (request, response) => {
         name: newGuest.name,
         surname: newGuest.surname,
         bus: newGuest.bus,
+        allergies: newGuest.allergies,
       });
     }
   });
