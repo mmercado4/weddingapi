@@ -263,10 +263,13 @@ api.post("/api/login", (request, response) => {
               expiresIn: "1h",
             });
 
-            response.cookie("token", token).status(200).send({
-              success: true,
-              message: "User logged in successfully",
-            });
+            response
+              .cookie("token", token, { sameSite: "none", secure: true })
+              .status(200)
+              .send({
+                success: true,
+                message: "User logged in successfully",
+              });
           } else {
             response.status(403).send({
               success: false,
