@@ -260,7 +260,7 @@ api.post("/api/login", (request, response) => {
           if (result) {
             //Create token
             const token = jwt.sign({ user: data }, process.env.SEED_AUTH, {
-              expiresIn: "1h",
+              expiresIn: 50000,
             });
 
             response
